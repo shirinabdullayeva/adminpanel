@@ -9,21 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-
-
 <body class="bg-gray-100 font-sans">
- 
+
     <header class="fixed w-full top-0 z-10 bg-white shadow-md p-4">
         <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-
-         
             <input required type="search" placeholder="F.I.SH kiriting..."
-                class="border border-gray-400 w-full md:w-[400px] lg:max-w-[600px] p-2 rounded-md pl-4 font-semibold text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
+                class="border border-gray-400 w-full max-w-[400px] p-2 rounded-md pl-4 font-semibold text-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none" />
 
-          
-            <div class="flex flex-wrap justify-center md:justify-end gap-3 w-full md:w-auto">
+            <div class="flex flex-wrap justify-center md:justify-end gap-3">
                 <select
-                    class="bg-blue-600 text-white font-semibold rounded-md p-2 px-4 text-[16px] focus:ring-2 focus:ring-blue-300 cursor-pointer w-full sm:w-auto">
+                    class="bg-blue-600 text-white font-semibold rounded-md p-2 px-4 text-[16px] focus:ring-2 focus:ring-blue-300 cursor-pointer">
                     <option selected disabled>Choose position type</option>
                     <option value="Junior">Junior</option>
                     <option value="Middle">Middle</option>
@@ -31,7 +26,7 @@
                 </select>
 
                 <select
-                    class="bg-gray-600 text-white font-semibold rounded-md p-2 px-4 text-[16px] focus:ring-2 focus:ring-gray-300 cursor-pointer w-full sm:w-auto">
+                    class="bg-gray-600 text-white font-semibold rounded-md p-2 px-4 text-[16px] focus:ring-2 focus:ring-gray-300 cursor-pointer">
                     <option selected disabled>Choose address</option>
                     <option value="Toshkent">Toshkent</option>
                     <option value="Samarqand">Samarqand</option>
@@ -42,18 +37,18 @@
                 </select>
 
                 <button
-                    class="bg-green-600 hover:bg-green-700 transition text-white font-bold rounded-md px-5 py-2 cursor-pointer w-full sm:w-auto">
+                    class="bg-green-600 hover:bg-green-700 transition text-white font-bold rounded-md px-5 py-2 cursor-pointer">
                     Add Students
                 </button>
             </div>
         </div>
     </header>
 
-  
-    <main class="mt-[180px] sm:mt-[190px] md:mt-[140px] container mx-auto px-2 sm:px-4">
+
+    <div class="mt-[120px] container mx-auto px-4">
         <div class="overflow-x-auto shadow-md rounded-lg bg-white">
-            <table class="min-w-full text-sm text-left text-gray-600">
-                <thead class=" sm:mt-[190px] md:mt-[140px] bg-black text-white uppercase text-[13px]">
+            <table class="w-full text-sm text-left text-gray-600">
+                <thead class="bg-black text-white uppercase text-[13px]">
                     <tr>
                         <th class="px-6 py-3">No</th>
                         <th class="px-6 py-3">FirstName</th>
@@ -69,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y bg-gray-200">
-                    <tr class="transition">
+                    <tr class=" transition">
                         <td class="px-6 py-4 font-bold text-black">1</td>
                         <td class="px-6 py-4">Shirin</td>
                         <td class="px-6 py-4">Shavkatova</td>
@@ -80,26 +75,20 @@
                         <td class="px-6 py-4">7,000$</td>
                         <td class="px-6 py-4">Yo‘q</td>
                         <td class="px-6 py-4">Active</td>
-                        <td class="px-6 py-4 flex flex-wrap gap-2">
-                            <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-md">
-                                Edit
-                            </button>
-                            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md">
-                                Delete
-                            </button>
+                        <td class="px-6 py-4 flex gap-2">
+                            <button
+                                class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-md">Edit</button>
+                            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md">Delete</button>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-    </main>
+    </div>
 
-    
-    <div class="fixed sm:mt-[70px] inset-0 hidden items-center justify-center bg-black/50 backdrop-blur-sm px-4" id="studentModal">
+    <div class="fixed inset-0 hidden items-center justify-center bg-black/50 backdrop-blur-sm" id="studentModal">
         <form class="bg-white rounded-lg shadow-lg w-full max-w-[480px] p-6">
-            <h2 class="text-center text-xl font-bold mb-5 text-gray-700">
-                Add New Student
-            </h2>
+            <h2 class="text-center text-xl font-bold mb-5 text-gray-700">Add New Student</h2>
 
             <div class="space-y-4">
                 <div>
@@ -125,7 +114,7 @@
                     </select>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-gray-700">Birthday</label>
                         <input type="date" class="border w-full p-2 rounded-md mt-1 focus:ring-2 focus:ring-blue-400" />
@@ -141,7 +130,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="font-semibold text-gray-700">Position Type</label>
                         <select class="border w-full p-2 rounded-md mt-1 focus:ring-2 focus:ring-blue-400">
@@ -164,21 +153,22 @@
                 </label>
             </div>
 
-            <div class="flex justify-end mt-6 gap-3 flex-wrap">
-                <button type="button"
-                    class="button bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md w-full sm:w-auto">
+            <div class="flex justify-end mt-6 gap-3">
+                <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md">
                     Close
                 </button>
-                <button type="submit"
-                    class="button2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md w-full sm:w-auto">
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md">
                     Add
                 </button>
             </div>
         </form>
     </div>
 
-    <script src="./js/main.js"></script>
-</body>
 
+
+
+    
+</body>
+<script src="./js/main.js"></script>
 
 </html>
