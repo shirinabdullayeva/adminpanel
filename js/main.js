@@ -13,6 +13,34 @@ let selectPosition = document.getElementById("select-position");
 let closeModal = document.getElementById("close-modal");
 let selected = null;
 
+
+searchInput.oninput = (e) => {
+  let value = e.target.value.toLowerCase();
+  let filtered = students.filter((el) =>
+    el.FirstName.toLowerCase().includes(value) ||
+    el.LastName.toLowerCase().includes(value)
+  );
+  showStudents(tbody, filtered);
+};
+
+
+selectAddress.onchange = () => {
+  let value = selectAddress.value;
+  let filtered = value ? students.filter((el) => el.Address === value) : students;
+  showStudents(tbody, filtered);
+};
+
+selectPosition.onchange = () => {
+  let value = selectPosition.value;
+  let filtered = value ? students.filter((el) => el.PositionType === value) : students;
+  showStudents(tbody, filtered);
+};
+
+
+
+
+
+
 function showStudents(content, data) {
   content.innerHTML = "";
   data.forEach((el, index) => {
@@ -101,25 +129,3 @@ function editStudent(id) {
   inputs[7].checked = student.IsMarried;
 }
 
-
-searchInput.oninput = (e) => {
-  let value = e.target.value.toLowerCase();
-  let filtered = students.filter((el) =>
-    el.FirstName.toLowerCase().includes(value) ||
-    el.LastName.toLowerCase().includes(value)
-  );
-  showStudents(tbody, filtered);
-};
-
-
-selectAddress.onchange = () => {
-  let value = selectAddress.value;
-  let filtered = value ? students.filter((el) => el.Address === value) : students;
-  showStudents(tbody, filtered);
-};
-
-selectPosition.onchange = () => {
-  let value = selectPosition.value;
-  let filtered = value ? students.filter((el) => el.PositionType === value) : students;
-  showStudents(tbody, filtered);
-};
