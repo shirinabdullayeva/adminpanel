@@ -1,97 +1,125 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const addBtn = document.querySelector("button.bg-green-600");
-    const modal = document.getElementById("studentModal");
-    const closeBtn = modal.querySelector("button.bg-gray-500");
-    const form = modal.querySelector("form");
-    const tableBody = document.querySelector("tbody");
-    const searchInput = document.querySelector("input[type='search']");
-    let students = [];
 
-    // Modalni ochish
-    addBtn.addEventListener("click", () => {
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-    });
+let students = JSON.parse(localStorage.getItem("students") || "[]");
+localStorage.setItem("students", JSON.stringify(students));
 
-    // Modalni yopish
-    closeBtn.addEventListener("click", () => {
-        modal.classList.remove("flex");
-        modal.classList.add("hidden");
-        form.reset();
-    });
+let tbody = document.getElementById("tbody");
+let addBtn = document.getElementById("add-btn");
+let outerModal = document.getElementById("outer-modal");
+let innerModal = document.getElementById("inner-modal");
+let btn = document.getElementById("btn");
+let searchInput = document.getElementById("search-input");
+let selectAddress = document.getElementById("select-address");
+let selectPosition = document.getElementById("select-position");
+let closeModal = document.getElementById("close-modal");
+let selected = null;
 
-    // Formani yuborish (student qo‘shish)
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const inputs = form.querySelectorAll("input, select");
-        const data = {
-            firstName: inputs[0].value,
-            lastName: inputs[1].value,
-            address: inputs[2].value,
-            birthday: inputs[3].value,
-            position: inputs[4].value,
-            positionType: inputs[5].value,
-            salary: inputs[6].value + "$",
-            isMarried: inputs[7].checked ? "Ha" : "Yo‘q",
-            activity: "Active",
-        };
+function showStudents(content, data) {
+  content.innerHTML = "";
+  data.forEach((el, index) => {
+    content.innerHTML += `
+          <tr class="hover:bg-gray-100 transition">
+            <td class="px-6 py-4 font-semibold">${index + 1}</td>
+            <td class="px-6 py-4">${el.FirstName}</td>
+            <td class="px-6 py-4">${el.LastName}</td>
+            <td class="px-6 py-4">${el.Address}</td>
+            <td class="px-6 py-4">${el.Birthday}</td>
+            <td class="px-6 py-4">${el.Position}</td>
+            <td class="px-6 py-4">${el.PositionType}</td>
+            <td class="px-6 py-4 text-green-600 font-semibold">${el.Salary}$</td>
+            <td class="px-6 py-4">${el.IsMarried ? "Yes" : "No"}</td>
+            <td class="px-6 py-4 flex gap-2">
+              <button onclick="editStudent(${el.id})" class="bg-black hover:bg-blue-700 text-white px-3 py-1 rounded-md text-xs font-semibold">Edit</button>
+              <button onclick="deleteStudent(${el.id})" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md text-xs font-semibold">Delete</button>
+            </td>
+          </tr>`;
+  });
+}
 
-        if (!data.firstName || !data.lastName) {
-            alert("Iltimos, barcha majburiy maydonlarni to‘ldiring!");
-            return;
-        }
+showStudents(tbody, students);
 
-        students.push(data);
-        renderTable();
-        form.reset();
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-    });
+addBtn.onclick = () => {
+  selected = null;
+  btn.textContent = "Add";
+  outerModal.classList.remove("hidden");
+  innerModal.reset();
+};
 
-    // Jadvalni render qilish
-    function renderTable(filtered = students) {
-        tableBody.innerHTML = "";
-        filtered.forEach((s, i) => {
-            const row = document.createElement("tr");
-            row.className = "bg-gray-100 hover:bg-gray-200 transition";
-            row.innerHTML = `
-        <td class="px-6 py-4 font-bold text-black">${i + 1}</td>
-        <td class="px-6 py-4">${s.firstName}</td>
-        <td class="px-6 py-4">${s.lastName}</td>
-        <td class="px-6 py-4">${s.address}</td>
-        <td class="px-6 py-4">${s.birthday}</td>
-        <td class="px-6 py-4">${s.position}</td>
-        <td class="px-6 py-4">${s.positionType}</td>
-        <td class="px-6 py-4">${s.salary}</td>
-        <td class="px-6 py-4">${s.isMarried}</td>
-        <td class="px-6 py-4">${s.activity}</td>
-        <td class="px-6 py-4 flex gap-2">
-          <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded-md editBtn">Edit</button>
-          <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-md deleteBtn">Delete</button>
-        </td>
-      `;
-            tableBody.appendChild(row);
-        });
+closeModal.onclick = () => {
+  outerModal.classList.add("hidden");
+  innerModal.reset();
+};
 
-        // Delete tugmalari
-        document.querySelectorAll(".deleteBtn").forEach((btn, index) => {
-            btn.addEventListener("click", () => {
-                if (confirm("Haqiqatan ham o‘chirmoqchimisiz?")) {
-                    students.splice(index, 1);
-                    renderTable();
-                }
-            });
-        });
-    }
+innerModal.onclick = (e) => e.stopPropagation();
+outerModal.onclick = () => outerModal.classList.add("hidden");
 
-    // Qidiruv
-    searchInput.addEventListener("input", (e) => {
-        const value = e.target.value.toLowerCase();
-        const filtered = students.filter(
-            (s) =>
-                s.firstName.toLowerCase().includes(value) ||
-                s.lastName.toLowerCase().includes(value)
-        );
-        renderTable(filtered);
-    });
-});
+innerModal.onsubmit = (e) => {
+  e.preventDefault();
+  let data = e.target;
+  let studentObj = {
+    FirstName: data[0].value,
+    LastName: data[1].value,
+    Address: data[2].value,
+    Birthday: data[3].value,
+    Position: data[4].value,
+    PositionType: data[5].value,
+    Salary: data[6].value,
+    IsMarried: data[7].checked,
+    id: selected ? selected : Date.now(),
+  };
+
+  if (selected) {
+    students = students.map((el) => (el.id === selected ? studentObj : el));
+  } else {
+    students.push(studentObj);
+  }
+
+  localStorage.setItem("students", JSON.stringify(students));
+  showStudents(tbody, students);
+  outerModal.classList.add("hidden");
+  innerModal.reset();
+};
+
+function deleteStudent(id) {
+  students = students.filter((el) => el.id !== id);
+  localStorage.setItem("students", JSON.stringify(students));
+  showStudents(tbody, students);
+}
+
+function editStudent(id) {
+  selected = id;
+  let student = students.find((el) => el.id === id);
+  outerModal.classList.remove("hidden");
+  btn.textContent = "Edit Student";
+  let inputs = innerModal.elements;
+  inputs[0].value = student.FirstName;
+  inputs[1].value = student.LastName;
+  inputs[2].value = student.Address;
+  inputs[3].value = student.Birthday;
+  inputs[4].value = student.Position;
+  inputs[5].value = student.PositionType;
+  inputs[6].value = student.Salary;
+  inputs[7].checked = student.IsMarried;
+}
+
+
+searchInput.oninput = (e) => {
+  let value = e.target.value.toLowerCase();
+  let filtered = students.filter((el) =>
+    el.FirstName.toLowerCase().includes(value) ||
+    el.LastName.toLowerCase().includes(value)
+  );
+  showStudents(tbody, filtered);
+};
+
+
+selectAddress.onchange = () => {
+  let value = selectAddress.value;
+  let filtered = value ? students.filter((el) => el.Address === value) : students;
+  showStudents(tbody, filtered);
+};
+
+selectPosition.onchange = () => {
+  let value = selectPosition.value;
+  let filtered = value ? students.filter((el) => el.PositionType === value) : students;
+  showStudents(tbody, filtered);
+};
